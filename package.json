@@ -1,0 +1,13 @@
+{
+  "name": "simplest-example",
+  "version": "0.0.0",
+  "description": "A example to serve up a static page with express.",
+  "main": "server.js",
+  "repository": "",
+  "author": "Rick Kozak",
+  "dependencies": {
+    "express": "~3.2.4",
+    "mongodb": "^2.2.27",
+    "mongoose": "^4.10.2"
+  }
+}

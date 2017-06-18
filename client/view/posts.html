@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Instagram</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://use.fontawesome.com/ab1c8d24f0.js"></script>
+        <link rel="stylesheet" href="/client/css/styles.css">
+        <link rel="stylesheet" href="/client/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/client/css/bootstrap-responsive.min.css">
+        <!-- our local copy of the jquery library. Normally, we'd use a CDN copy to use someone else's bandwidth -->
+        <script src="js/jquery.min.js"></script>
+        <!-- I am including this script directly in the HTML, but usually this would be in its own file  -->
+        <script>
+        /*global $*/
+            
+            //onLoad function, to be executed when page is completed loaded by browser
+            function onload(){
+                //start a promise chain
+                Promise.resolve()
+                .then(function(){
+                    //jQuery function to request all the posts from the server
+                    //the 'return' is required. Otherwise, the subsequent then will not wait for this to complete
+                    return $.post('posts');  
+                })
+                //when the server responds, we'll execute this code
+                .then(function(posts){
+                    //jQuery function to set the innerHTML of the div with id = 'posts' to empty
+                    $('#posts').html('');
+                    //loop over each post item in the posts array
+                    posts.forEach(function(post){
+                        //jQuery function to append to the innterHTML of the div with id = 'posts'
+                        $('#posts').append(
+                            //remember the id in a data- element (we can define as many of our own as needed)
+                            '<div data-postId="' + post._id + '">' +
+                            //set the image url in the img tag. This will force the browser to go get it
+                            '<img src="' + post.image + '"/>' +
+                            //set the comment into a paragraph
+                            '<p>' + post.comment + '</p>' +
+                            //set the like count
+                            '<p>Like Count: ' + 
+                            //use a span with an id so the javascript can find this easily later
+                            '<span id ="like' + post._id + '">' + post.likeCount + '</span>' + 
+                            '</p>' +
+                            //set up the click event to call likeClick() with the id of this item as a parameter
+                            '<button onclick="likeClick(\'' + post._id + '\');">Like</button>' +
+                            '</div>'
+                        );
+                    });
+                })
+                .catch(function(err){
+                    //always include a catch for exceptions
+                    console.log(err);
+                });
+            }
+        </script>
+    </head>
+    <!-- add the onload event handler to the body tag -->
+    <body onload="onload();">
+        <!--<div class="container">
+      <div class="main">
+        <section id="top">
+          <div class="container">
+            <div class="top-bar">
+              <img src="/client/img/insta-icon.png" id="insta-icon"></img>
+              <span id="insta-title">| Instagram</span>
+              <form class="form-inline search-form">
+                <label class="sr-only" for="inlineFormInput">Name</label>
+                <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Search">
+              </form>
+              <i class="fa fa-user-o top-icons" aria-hidden="true"></i>
+              <i class="fa fa-heart-o top-icons" aria-hidden="true"></i>
+              <i class="fa fa-compass top-icons" aria-hidden="true"></i>
+            </div>
+          </div>
+        </section>
+        <hr id="top-hr">
+        <section id="section-2">
+          <div class="container">
+            <div class="feed">
+              <div class="user-bar">
+                <a href="#"><img class="img-circle" src="/client/img/9gag.png"></a>
+                <a id="profile-name" href="#">9gag</a>
+              </div>
+              <hr id="feed-hr">
+              <div class="photo-space">
+                <img class="photo"src="/client/img/sample.jpg" alt="">
+              </div>
+              <div class="desc">
+                <a class="likes"href="#"><b>700 likes</b></a><br>
+                <a class="user-cmnt"href="#"><b>9gag</b></a>blue sky <br>
+                <br>
+                <a id="load-cmnt" href="#">load more comments</a>
+                <br>
+                <a class="user-cmnt"href="#"><b>User123</b></a>Nice
+                <hr>
+                <div class="comment-box">
+                  <a href="#"><i class="fa fa-heart-o fa-2x like" aria-hidden="true"></i></a>
+                  <form class="form-inline  comment-form">
+                    <label class="sr-only" for="inlineFormInput">Name</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0 comment-field" id="inlineFormInput" placeholder="Add a comment">
+                  </form>
+                  <a href="#">
+                    <i class="fa fa-circle-thin fa-small opt" aria-hidden="true"></i>
+                    <i class="fa fa-circle-thin opt" aria-hidden="true"></i>
+                    <i class="fa fa-circle-thin opt" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div> 
+
+
+    
+    <script src="../socket.io/socket.io.js"></script>
+    <script src="/client/js/jquery.min.js"></script>
+    <script src="/client/js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>-->
+        <!-- create a div with an id to give us an anchor point to let the javascript do its work -->
+        <div id="posts"></div>
+    </body>
+</html>
